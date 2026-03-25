@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Cos KAI — Kişisel Cilt Analizi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+
+
+<!-- Arka plan -->
+<div class="welcome-bg">
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+  <div class="bg-shape"></div>
+</div>
+
+<!-- Header -->
+<div class="app-header">
+  <h1>Dr. Cos KAI <span class="beta-badge" id="beta-badge">BETA</span></h1>
+  <p>Yapay Zeka Destekli Cilt Analizi</p>
+</div>
+
+<!-- Progress -->
+<div class="progress-wrap">
+  <div class="progress-dots" id="progress-dots"></div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-bar-fill"></div></div>
+  <div id="progress-label"></div>
+</div>
+
+<div class="app-wrap">
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 0 — KARŞILAMA                        -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step active" id="step-0">
+  <div style="text-align:center;padding:1rem 0 2rem">
+    <div class="welcome-logo">🌿</div>
+    <h1 class="welcome-title">Cildinizi Tanıyın</h1>
+    <p class="welcome-sub">2 dakikada kişisel cilt analiziniz.<br>Bilimsel temelli, kişiselleştirilmiş bakım rehberi.</p>
+    <div class="feature-badges">
+      <span class="feature-badge">🔬 Bilimsel Analiz</span>
+      <span class="feature-badge">🔒 Veri Güvende</span>
+      <span class="feature-badge">📋 Kişisel Rapor</span>
+    </div>
+    <button class="btn-primary" style="max-width:320px;margin:0 auto;display:block"
+      onclick="UI.showConsentModal()">Analize Başla →</button>
+    <p style="margin-top:12px;font-size:12px;color:var(--muted)">Kayıt gerekmez • Ücretsiz • 2 dakika</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 1 — KİŞİSEL BİLGİLER                -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step" id="step-1">
+  <div class="step-header">
+    <h2>Sizi Tanıyalım</h2>
+    <p>Analizimizi size özel yapalım</p>
+  </div>
+
+  <div class="section-label">Cinsiyet</div>
+  <div class="grid3">
+    <div class="card" data-group="gender" data-val="kadin" onclick="UI.selectCard(this,'gender')">
+      <div class="card-icon">👩</div>
+      <div class="card-title">Kadın</div>
+    </div>
+    <div class="card" data-group="gender" data-val="erkek" onclick="UI.selectCard(this,'gender')">
+      <div class="card-icon">👨</div>
+      <div class="card-title">Erkek</div>
+    </div>
+    <div class="card" data-group="gender" data-val="diger" onclick="UI.selectCard(this,'gender')">
+      <div class="card-icon">✦</div>
+      <div class="card-title">Belirtmek istemiyorum</div>
+    </div>
+  </div>
+
+  <div class="section-label">Yaş</div>
+  <div class="slider-wrap">
+    <div class="slider-row">
+      <span style="font-size:13px;color:var(--muted)">16</span>
+      <input type="range" id="age" min="16" max="70" value="28" step="1"
+        oninput="UI.updateSlider('age','age-display','')">
+      <span style="font-size:13px;color:var(--muted)">70+</span>
+    </div>
+    <div style="text-align:center;margin-top:8px">
+      <span class="slider-val" id="age-display">28</span>
+      <span style="font-size:13px;color:var(--muted)"> yaş</span>
+    </div>
+    <div class="slider-labels"><span>Genç</span><span>Yetişkin</span><span>Olgun</span><span>Kıdemli</span></div>
+  </div>
+
+  <div class="section-label">Hamile veya emziriyor musunuz?</div>
+  <div class="grid2">
+    <div class="card" data-group="isPregnant" data-val="false" onclick="UI.selectCard(this,'isPregnant');AppState.userData.isPregnant=false">
+      <div class="card-title">Hayır</div>
+    </div>
+    <div class="card" data-group="isPregnant" data-val="true" onclick="UI.selectCard(this,'isPregnant');AppState.userData.isPregnant=true">
+      <div class="card-title">Evet</div>
+      <div class="card-desc">Retinol gibi ürünler önerilmeyecek</div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="prevStep(1)">Geri</button>
+    <button class="btn-primary" onclick="nextStep(1)">Devam →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 2 — CİLT TİPİ                        -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step" id="step-2">
+  <div class="step-header">
+    <h2>Cilt Tipiniz</h2>
+    <p>Size en uygun analiz için cilt tipinizi belirleyin</p>
+  </div>
+
+  <div class="card" data-group="skinType" data-val="normal" onclick="UI.selectCard(this,'skinType')">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px">💧</span>
+      <div><div class="card-title">Normal Cilt</div>
+      <div class="card-desc">Dengeli, parlama yok, gerginlik yok. Şanslısınız!</div></div>
+    </div>
+  </div>
+  <div class="card" data-group="skinType" data-val="yagli" onclick="UI.selectCard(this,'skinType')">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px">✨</span>
+      <div><div class="card-title">Yağlı Cilt</div>
+      <div class="card-desc">Gün içinde yüz parlar, gözenekler belirgin, akne eğilimli</div></div>
+    </div>
+  </div>
+  <div class="card" data-group="skinType" data-val="kuru" onclick="UI.selectCard(this,'skinType')">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px">🌵</span>
+      <div><div class="card-title">Kuru Cilt</div>
+      <div class="card-desc">Gerginlik hissi, soyulma, mat ve donuk görünüm</div></div>
+    </div>
+  </div>
+  <div class="card" data-group="skinType" data-val="karma" onclick="UI.selectCard(this,'skinType')">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px">☯️</span>
+      <div><div class="card-title">Karma Cilt</div>
+      <div class="card-desc">Alın/burun yağlı (T-zone), yanaklar normal veya kuru</div></div>
+    </div>
+  </div>
+  <div class="card" data-group="skinType" data-val="hassas" onclick="UI.selectCard(this,'skinType')">
+    <div style="display:flex;align-items:center;gap:12px">
+      <span style="font-size:28px">🌸</span>
+      <div><div class="card-title">Hassas Cilt</div>
+      <div class="card-desc">Kolayca kızarır, yanma / kaşıntı hissi, ürünlere reaksiyon verir</div></div>
+    </div>
+  </div>
+
+  <p style="text-align:center;margin:.75rem 0">
+    <a href="#" onclick="event.preventDefault();document.getElementById('skintype-helper-modal').classList.add('open');setTimeout(startHelperQuiz,50);" style="font-size:13px;color:var(--primary)">
+      Emin değil misiniz? Yardımcı olalım →
+    </a>
+  </p>
+
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="prevStep(2)">Geri</button>
+    <button class="btn-primary" onclick="nextStep(2)">Devam →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 3 — PROBLEMLER                       -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step" id="step-3">
+  <div class="step-header">
+    <h2>Cilt Problemleriniz</h2>
+    <p>Şu an deneyimlediğiniz sorunları seçin. İstediğiniz kadar seçebilirsiniz.</p>
+  </div>
+
+  <div class="tags-wrap" id="problems-tags">
+    <div class="tag" data-val="akne" onclick="UI.toggleTag(this,'problems-tags')">🔴 Akne & Sivilce</div>
+    <div class="tag" data-val="kirisiklik" onclick="UI.toggleTag(this,'problems-tags')">〰️ Kırışıklık & İnce Çizgiler</div>
+    <div class="tag" data-val="leke" onclick="UI.toggleTag(this,'problems-tags')">📍 Leke & Ton Eşitsizliği</div>
+    <div class="tag" data-val="kuruluk" onclick="UI.toggleTag(this,'problems-tags')">💧 Kuruluk & Soyulma</div>
+    <div class="tag" data-val="yaglillik" onclick="UI.toggleTag(this,'problems-tags')">✨ Aşırı Yağlanma</div>
+    <div class="tag" data-val="hassasiyet" onclick="UI.toggleTag(this,'problems-tags')">🌸 Hassasiyet & Kızarıklık</div>
+    <div class="tag" data-val="gozalti" onclick="UI.toggleTag(this,'problems-tags')">👁️ Göz Altı Morluğu</div>
+    <div class="tag" data-val="sisme" onclick="UI.toggleTag(this,'problems-tags')">💫 Göz Altı Şişliği</div>
+    <div class="tag" data-val="donukluk" onclick="UI.toggleTag(this,'problems-tags')">🌫️ Donuk & Cansız Görünüm</div>
+    <div class="tag" data-val="genis_goz" onclick="UI.toggleTag(this,'problems-tags')">⭕ Büyük Gözenekler</div>
+    <div class="tag" data-val="hicbiri" onclick="UI.toggleTag(this,'problems-tags')">✅ Hiçbiri</div>
+  </div>
+
+  <div class="section-label">Tanı konulmuş bir cilt hastalığınız var mı?</div>
+  <div class="tags-wrap" id="diagnosis-tags">
+    <div class="tag" data-val="rozase" onclick="UI.toggleTag(this,'diagnosis-tags')">🔴 Rozase</div>
+    <div class="tag" data-val="egzama" onclick="UI.toggleTag(this,'diagnosis-tags')">🟠 Egzama</div>
+    <div class="tag" data-val="psoriazis" onclick="UI.toggleTag(this,'diagnosis-tags')">🟡 Sedef (Psoriazis)</div>
+    <div class="tag" data-val="alerjik" onclick="UI.toggleTag(this,'diagnosis-tags')">🟣 Alerjik Cilt</div>
+    <div class="tag" data-val="hicbiri" onclick="UI.toggleTag(this,'diagnosis-tags')">✅ Hiçbiri</div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="prevStep(3)">Geri</button>
+    <button class="btn-primary" onclick="nextStep(3)">Devam →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 4 — YAŞAM TARZI                      -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step" id="step-4">
+  <div class="step-header">
+    <h2>Yaşam Tarzınız</h2>
+    <p>Cilt sağlığının %40'ı yaşam tarzıyla ilgilidir</p>
+  </div>
+
+  <div class="section-label">💧 Günlük su tüketimi</div>
+  <div class="water-select" id="water-select">
+    <div class="water-btn" data-val="1" onclick="selectWater(this,'1')"><div class="water-icon">💧</div>1</div>
+    <div class="water-btn" data-val="2" onclick="selectWater(this,'2')"><div class="water-icon">💧</div>2</div>
+    <div class="water-btn" data-val="3" onclick="selectWater(this,'3')"><div class="water-icon">💧</div>3</div>
+    <div class="water-btn" data-val="4" onclick="selectWater(this,'4')"><div class="water-icon">💧</div>4</div>
+    <div class="water-btn" data-val="5" onclick="selectWater(this,'5')"><div class="water-icon">💧</div>5</div>
+    <div class="water-btn" data-val="6" onclick="selectWater(this,'6')"><div class="water-icon">💧</div>6</div>
+    <div class="water-btn" data-val="7" onclick="selectWater(this,'7')"><div class="water-icon">💧</div>7</div>
+    <div class="water-btn" data-val="8+" onclick="selectWater(this,'8+')"><div class="water-icon">💧</div>8+</div>
+  </div>
+  <p id="water-label" style="font-size:13px;color:var(--primary);min-height:20px;margin-bottom:1rem"></p>
+
+  <div class="section-label">🌙 Günlük uyku süresi</div>
+  <div class="grid3">
+    <div class="card" data-group="sleep" data-val="az" onclick="UI.selectCard(this,'sleep')">
+      <div class="card-title">Az</div><div class="card-desc">5-6 saat</div>
+    </div>
+    <div class="card" data-group="sleep" data-val="normal" onclick="UI.selectCard(this,'sleep')">
+      <div class="card-title">Normal</div><div class="card-desc">7-8 saat</div>
+    </div>
+    <div class="card" data-group="sleep" data-val="fazla" onclick="UI.selectCard(this,'sleep')">
+      <div class="card-title">Yeterli</div><div class="card-desc">9+ saat</div>
+    </div>
+  </div>
+
+  <div class="section-label">☀️ Güneş koruyucu kullanımı</div>
+  <div class="grid3">
+    <div class="card" data-group="spf" data-val="hic" onclick="UI.selectCard(this,'spf')">
+      <div class="card-title">Kullanmıyorum</div>
+    </div>
+    <div class="card" data-group="spf" data-val="bazen" onclick="UI.selectCard(this,'spf')">
+      <div class="card-title">Bazen</div>
+    </div>
+    <div class="card" data-group="spf" data-val="her" onclick="UI.selectCard(this,'spf')">
+      <div class="card-title">Her gün</div>
+    </div>
+  </div>
+
+  <div class="section-label">😰 Stres seviyeniz</div>
+  <div class="stress-faces">
+    <div style="text-align:center">
+      <div class="stress-face" data-val="cok_dusuk" onclick="UI.selectStress(this)">😌</div>
+      <div class="stress-label">Çok düşük</div>
+    </div>
+    <div style="text-align:center">
+      <div class="stress-face" data-val="dusuk" onclick="UI.selectStress(this)">🙂</div>
+      <div class="stress-label">Düşük</div>
+    </div>
+    <div style="text-align:center">
+      <div class="stress-face" data-val="orta" onclick="UI.selectStress(this)">😐</div>
+      <div class="stress-label">Orta</div>
+    </div>
+    <div style="text-align:center">
+      <div class="stress-face" data-val="yuksek" onclick="UI.selectStress(this)">😟</div>
+      <div class="stress-label">Yüksek</div>
+    </div>
+    <div style="text-align:center">
+      <div class="stress-face" data-val="cok_yuksek" onclick="UI.selectStress(this)">😫</div>
+      <div class="stress-label">Çok yüksek</div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="prevStep(4)">Geri</button>
+    <button class="btn-primary" onclick="nextStep(4)">Analizi Başlat →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 5 — FOTOĞRAF ANALİZİ (AKTİF)         -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step" id="step-5">
+  <div class="step-header">
+    <h2>Fotoğraf Analizi</h2>
+    <p>Fotoğrafınızdan yapay zeka ile cilt analizi yapılacak</p>
+  </div>
+
+  <!-- Yükleme / Çekim alanı -->
+  <div id="photo-upload-area" style="background:var(--card);border:2px dashed var(--border);
+    border-radius:var(--r);padding:2.5rem 1.5rem;text-align:center;margin-bottom:1rem;
+    cursor:pointer;transition:border-color .2s"
+    ondragover="event.preventDefault();this.style.borderColor='var(--primary)'"
+    ondragleave="this.style.borderColor='var(--border)'"
+    ondrop="handlePhotoDrop(event)">
+    <div style="font-size:48px;margin-bottom:1rem">📸</div>
+    <h3 style="margin-bottom:.5rem">Fotoğraf Yükle veya Çek</h3>
+    <p style="font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:1.25rem">
+      Sürükle bırak veya tıkla
+    </p>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <button class="btn-outline" style="font-size:13px;padding:8px 18px"
+        onclick="event.stopPropagation();document.getElementById('photo-file-input').click()">
+        📁 Galeriden Seç
+      </button>
+      <button class="btn-outline" style="font-size:13px;padding:8px 18px"
+        onclick="event.stopPropagation();startFourPhotoCapture()">
+        📷 Kamera
+      </button>
+    </div>
+    <input type="file" id="photo-file-input" accept="image/*" style="display:none"
+      onchange="handleSinglePhotoSelect(this)">
+  </div>
+
+  <!-- İpucu -->
+  <div style="background:#e8f5f1;border-radius:var(--r);padding:.75rem 1rem;
+    font-size:12px;color:#0f6e56;margin-bottom:1rem;line-height:1.7">
+    💡 <strong>İyi analiz için:</strong> Doğal ışıkta · Makyajsız · Düz bakarak · Net fotoğraf
+  </div>
+
+  <!-- 4 fotoğraf durumu (kamera ile çekilince görünür) -->
+  <div id="photo-grid-area" style="display:none;margin-bottom:1rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.5rem">
+      <div id="slot-0" style="aspect-ratio:3/4;background:#f0ede8;border-radius:var(--r);
+        overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center">
+        <img id="grid-photo-0" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+        <div id="slot-placeholder-0" style="font-size:11px;color:var(--muted);text-align:center">
+          <div style="font-size:24px;margin-bottom:4px">😐</div>Düz
+        </div>
+        <div id="slot-done-0" style="display:none;position:absolute;bottom:5px;right:5px;
+          background:#2d9b7f;color:#fff;border-radius:50%;width:20px;height:20px;
+          font-size:11px;display:none;align-items:center;justify-content:center">✓</div>
+        <div style="position:absolute;top:5px;left:6px;font-size:9px;color:var(--muted);
+          background:rgba(255,255,255,0.85);padding:1px 5px;border-radius:6px">1/4</div>
+      </div>
+      <div id="slot-1" style="aspect-ratio:3/4;background:#f0ede8;border-radius:var(--r);
+        overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center">
+        <img id="grid-photo-1" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+        <div id="slot-placeholder-1" style="font-size:11px;color:var(--muted);text-align:center">
+          <div style="font-size:24px;margin-bottom:4px">👈</div>Sol
+        </div>
+        <div id="slot-done-1" style="display:none;position:absolute;bottom:5px;right:5px;
+          background:#2d9b7f;color:#fff;border-radius:50%;width:20px;height:20px;
+          font-size:11px;align-items:center;justify-content:center">✓</div>
+        <div style="position:absolute;top:5px;left:6px;font-size:9px;color:var(--muted);
+          background:rgba(255,255,255,0.85);padding:1px 5px;border-radius:6px">2/4</div>
+      </div>
+      <div id="slot-2" style="aspect-ratio:3/4;background:#f0ede8;border-radius:var(--r);
+        overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center">
+        <img id="grid-photo-2" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+        <div id="slot-placeholder-2" style="font-size:11px;color:var(--muted);text-align:center">
+          <div style="font-size:24px;margin-bottom:4px">👉</div>Sağ
+        </div>
+        <div id="slot-done-2" style="display:none;position:absolute;bottom:5px;right:5px;
+          background:#2d9b7f;color:#fff;border-radius:50%;width:20px;height:20px;
+          font-size:11px;align-items:center;justify-content:center">✓</div>
+        <div style="position:absolute;top:5px;left:6px;font-size:9px;color:var(--muted);
+          background:rgba(255,255,255,0.85);padding:1px 5px;border-radius:6px">3/4</div>
+      </div>
+      <div id="slot-3" style="aspect-ratio:3/4;background:#f0ede8;border-radius:var(--r);
+        overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center">
+        <img id="grid-photo-3" style="display:none;width:100%;height:100%;object-fit:cover;position:absolute;inset:0">
+        <div id="slot-placeholder-3" style="font-size:11px;color:var(--muted);text-align:center">
+          <div style="font-size:24px;margin-bottom:4px">☝️</div>Yukarı
+        </div>
+        <div id="slot-done-3" style="display:none;position:absolute;bottom:5px;right:5px;
+          background:#2d9b7f;color:#fff;border-radius:50%;width:20px;height:20px;
+          font-size:11px;align-items:center;justify-content:center">✓</div>
+        <div style="position:absolute;top:5px;left:6px;font-size:9px;color:var(--muted);
+          background:rgba(255,255,255,0.85);padding:1px 5px;border-radius:6px">4/4</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <span style="font-size:12px;color:var(--muted)">Fotoğraf durumu</span>
+      <span id="photos-count-label" style="font-size:12px;font-weight:600;color:var(--primary)">0/4 tamamlandı</span>
+    </div>
+    <div style="background:var(--border);border-radius:4px;height:4px;margin-bottom:.75rem">
+      <div id="photos-progress-bar" style="height:100%;width:0%;background:var(--primary);
+        border-radius:4px;transition:width .3s"></div>
+    </div>
+    <button class="btn-secondary" style="width:100%;font-size:13px;padding:8px"
+      onclick="resetPhotos()">🔄 Baştan Al</button>
+  </div>
+
+  <!-- Galeriden tek fotoğraf önizleme -->
+  <div id="single-photo-preview" style="display:none;margin-bottom:1rem;text-align:center">
+    <img id="single-photo-img" style="max-width:100%;max-height:260px;border-radius:var(--r);
+      border:2px solid var(--primary)">
+    <div style="margin-top:.75rem;display:flex;gap:10px;justify-content:center">
+      <button class="btn-secondary" style="font-size:13px;padding:8px 16px"
+        onclick="resetPhotos()">✕ Kaldır</button>
+    </div>
+  </div>
+
+  <!-- KAI Analiz sonucu -->
+  <div id="photo-result" style="display:none;margin-bottom:1rem">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:.75rem">
+      <span style="font-size:18px">🔬</span>
+      <span style="font-size:15px;font-weight:600;color:var(--primary)">KAI Cilt Tarama Sonucu</span>
+    </div>
+    <div id="scan-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem"></div>
+    <div style="background:var(--card);border:1px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:.5rem">
+      <div style="font-size:12px;font-weight:600;color:var(--primary);margin-bottom:.5rem">📋 KAI Değerlendirmesi</div>
+      <div id="photo-result-text" style="font-size:13px;color:var(--text);line-height:1.8"></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);font-style:italic;text-align:center">
+      ⚕️ Bu analiz tıbbi teşhis değildir. Genel bilgi amaçlıdır.
+    </div>
+  </div>
+
+  <!-- Yükleniyor -->
+  <div id="photo-loading" style="display:none;text-align:center;padding:1.5rem">
+    <div class="analysis-pulse" style="justify-content:center;margin-bottom:.75rem">
+      <div class="pulse-dot"></div><div class="pulse-dot"></div><div class="pulse-dot"></div>
+    </div>
+    <p style="font-size:14px;color:var(--primary)">KAI analiz ediyor...</p>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-secondary" onclick="prevStep(5)">Geri</button>
+    <button class="btn-primary" id="photo-next-btn" onclick="UI.goToStep(6)"
+      style="opacity:.4;pointer-events:none">
+      Devam — Analizi Göster →
+    </button>
+  </div>
+
+    <!-- Yükleme alanı -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!-- KAMERA MODALI — Image 3-5 tasarımı                          -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div id="camera-modal" style="display:none;position:fixed;inset:0;z-index:9999;
+  background:rgba(0,0,0,0.6);align-items:center;justify-content:center;padding:1rem">
+
+  <div style="background:#fff;border-radius:20px;width:100%;max-width:480px;
+    overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,0.4)">
+
+    <!-- Başlık bar -->
+    <div style="display:flex;align-items:center;justify-content:space-between;
+      padding:.75rem 1rem;border-bottom:1px solid #eee">
+      <span style="font-size:14px;font-weight:600;color:#333">📷 Yüz Analizi</span>
+      <!-- Slot dots -->
+      <div style="display:flex;gap:6px" id="cam-slot-dots">
+        <div class="sdot" id="sdot-0" style="width:10px;height:10px;border-radius:50%;background:#e0e0e0"></div>
+        <div class="sdot" id="sdot-1" style="width:10px;height:10px;border-radius:50%;background:#e0e0e0"></div>
+        <div class="sdot" id="sdot-2" style="width:10px;height:10px;border-radius:50%;background:#e0e0e0"></div>
+        <div class="sdot" id="sdot-3" style="width:10px;height:10px;border-radius:50%;background:#e0e0e0"></div>
+      </div>
+      <button onclick="closeCamera()" style="background:#f5f5f5;border:none;border-radius:50%;
+        width:32px;height:32px;font-size:16px;cursor:pointer;color:#666">✕</button>
+    </div>
+
+    <!-- Talimat şeridi -->
+    <div id="cam-instruction-bar" style="background:#e8f5f0;padding:.6rem 1rem;
+      text-align:center;font-size:13px;font-weight:600;color:#1a6b5a">
+      1/4 · Düz bakın, kameraya bakın
+    </div>
+
+    <!-- Video viewport -->
+    <div id="cam-viewport" style="position:relative;width:100%;aspect-ratio:4/3;
+      background:#111;overflow:hidden">
+
+      <video id="camera-video" autoplay playsinline muted
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover"></video>
+
+      <!-- SVG oval maske + yeşil çerçeve (doluluk göstergesi) -->
+      <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"
+        viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <mask id="oval-hole">
+            <rect width="400" height="300" fill="white"/>
+            <ellipse id="oval-el" cx="200" cy="148" rx="120" ry="138" fill="black"/>
+          </mask>
+          <!-- Kesik çizgi animasyonu için -->
+          <clipPath id="oval-clip">
+            <ellipse cx="200" cy="148" rx="121" ry="139"/>
+          </clipPath>
+        </defs>
+        <!-- Karartma -->
+        <rect width="400" height="300" fill="rgba(0,0,0,0.45)" mask="url(#oval-hole)"/>
+        <!-- Oval çerçeve — dolulukla renk değişir -->
+        <ellipse id="cam-oval-border" cx="200" cy="148" rx="120" ry="138"
+          fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2.5"
+          stroke-dasharray="8 4" stroke-linecap="round"/>
+      </svg>
+
+      <!-- Geri sayım -->
+      <div id="cam-countdown" style="display:none;position:absolute;inset:0;
+        align-items:center;justify-content:center;pointer-events:none">
+        <div id="cam-countdown-num"
+          style="font-size:110px;font-weight:800;color:#fff;
+          text-shadow:0 0 40px rgba(0,0,0,0.9);line-height:1;
+          animation:countPop .3s ease"></div>
+      </div>
+
+      <!-- Durum pill -->
+      <div id="cam-status-label" style="position:absolute;bottom:10px;left:50%;
+        transform:translateX(-50%);background:rgba(0,0,0,0.6);color:#fff;
+        font-size:12px;padding:4px 14px;border-radius:20px;white-space:nowrap;
+        opacity:0;transition:opacity .3s;font-weight:500"></div>
+
+      <!-- Kamera flip -->
+      <button onclick="camFlip()" style="position:absolute;top:10px;right:10px;
+        background:rgba(0,0,0,0.4);border:none;color:#fff;border-radius:50%;
+        width:36px;height:36px;font-size:16px;cursor:pointer">🔄</button>
+    </div>
+
+    <!-- Doluluk çubuğu -->
+    <div style="padding:.5rem 1rem .3rem">
+      <div style="background:#eee;border-radius:6px;height:6px;overflow:hidden">
+        <div id="cam-fill-bar" style="height:100%;width:0%;border-radius:6px;
+          background:#2d9b7f;transition:width .15s,background .25s"></div>
+      </div>
+    </div>
+
+    <!-- Thumbnail şeridi + butonlar -->
+    <div style="padding:.5rem 1rem .75rem;display:flex;align-items:center;gap:.75rem">
+      <div style="display:flex;gap:6px;flex:1">
+        <div id="thumb-0" style="width:48px;height:48px;border-radius:8px;background:#f0f0f0;
+          overflow:hidden;border:2px solid #eee;flex-shrink:0">
+          <img id="thumb-img-0" style="width:100%;height:100%;object-fit:cover;display:none"></div>
+        <div id="thumb-1" style="width:48px;height:48px;border-radius:8px;background:#f0f0f0;
+          overflow:hidden;border:2px solid #eee;flex-shrink:0">
+          <img id="thumb-img-1" style="width:100%;height:100%;object-fit:cover;display:none"></div>
+        <div id="thumb-2" style="width:48px;height:48px;border-radius:8px;background:#f0f0f0;
+          overflow:hidden;border:2px solid #eee;flex-shrink:0">
+          <img id="thumb-img-2" style="width:100%;height:100%;object-fit:cover;display:none"></div>
+        <div id="thumb-3" style="width:48px;height:48px;border-radius:8px;background:#f0f0f0;
+          overflow:hidden;border:2px solid #eee;flex-shrink:0">
+          <img id="thumb-img-3" style="width:100%;height:100%;object-fit:cover;display:none"></div>
+        <span style="font-size:11px;color:#999;align-self:center;margin-left:4px">4 açıdan analiz</span>
+      </div>
+    </div>
+
+    <!-- Alt butonlar -->
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:.5rem;
+      padding:0 1rem .75rem">
+      <button onclick="closeCamera()" style="background:#f5f5f5;border:none;border-radius:10px;
+        padding:.65rem;font-size:13px;color:#666;cursor:pointer;font-weight:500">✕ İptal</button>
+      <button onclick="capturePhoto()" id="capture-btn"
+        style="background:#1a6b5a;border:none;border-radius:10px;padding:.65rem;
+        font-size:13px;color:#fff;cursor:pointer;font-weight:600;
+        transition:transform .1s,background .2s"
+        onmousedown="this.style.transform='scale(0.97)'"
+        onmouseup="this.style.transform='scale(1)'">📸 Şimdi Çek</button>
+    </div>
+
+    <!-- Hata mesajı -->
+    <div id="camera-error" style="display:none;color:#e05c5c;text-align:center;
+      padding:.5rem 1rem .75rem;font-size:12px"></div>
+  </div>
+
+  <!-- Gizli canvas -->
+  <canvas id="camera-canvas" style="display:none"></canvas>
+</div>
+<style>
+@keyframes countPop { from{transform:scale(1.4);opacity:.6} to{transform:scale(1);opacity:1} }
+</style>
+  <canvas id="camera-canvas" style="display:none"></canvas>
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 6 — ANALİZ YÜKLEME                   -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step" id="step-6">
+  <div style="text-align:center;padding:1rem 1rem 2rem">
+
+    <!-- Yüz tarama alanı - koyu arka plan -->
+    <div id="scan-wrap" style="position:relative;width:240px;height:300px;margin:0 auto 1rem;
+      border-radius:16px;overflow:hidden;background:#0a0e1a;display:inline-block">
+
+      <!-- Kullanıcı fotoğrafı - karartılmış -->
+      <img id="step6-scan-photo" alt=""
+        style="display:none;width:100%;height:100%;object-fit:cover;opacity:0.55;border-radius:16px">
+
+      <!-- Fallback koyu yüz SVG -->
+      <div id="step6-scan-svg" style="width:100%;height:100%;display:flex;
+        align-items:center;justify-content:center;background:#0a0e1a">
+        <svg viewBox="0 0 120 150" width="120" height="150" fill="none">
+          <ellipse cx="60" cy="80" rx="44" ry="58" stroke="#1a6b5a" stroke-width="1.5"
+            stroke-dasharray="4 3" opacity=".6"/>
+          <circle cx="45" cy="62" r="5" stroke="#2d9b7f" stroke-width="1" opacity=".5"/>
+          <circle cx="75" cy="62" r="5" stroke="#2d9b7f" stroke-width="1" opacity=".5"/>
+          <path d="M52 88 Q60 96 68 88" stroke="#2d9b7f" stroke-width="1" stroke-linecap="round" opacity=".5"/>
+        </svg>
+      </div>
+
+      <!-- Landmark noktaları + bağlantı çizgileri (Canvas) -->
+      <canvas id="landmark-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+
+      <!-- Yeşil tarama çizgisi -->
+      <div id="scan-line-green" style="position:absolute;left:0;right:0;top:0;height:2px;
+        background:linear-gradient(90deg,transparent 0%,#00ff88 30%,#00ffaa 50%,#00ff88 70%,transparent 100%);
+        box-shadow:0 0 8px #00ff88,0 0 16px rgba(0,255,136,0.4);
+        opacity:0;transition:opacity .3s"></div>
+
+      <!-- Durum yazısı -->
+      <div id="scan-status-overlay" style="position:absolute;bottom:10px;left:8px;right:8px;
+        background:rgba(0,20,10,0.85);border:1px solid rgba(0,255,136,0.3);
+        border-radius:6px;padding:4px 8px;font-size:10px;font-family:monospace;
+        color:#00ff88;text-align:left;letter-spacing:.5px;opacity:0;transition:opacity .3s">
+        BAŞLATILIYOR...
+      </div>
+
+      <!-- Köşe çerçeve efekti -->
+      <div style="position:absolute;inset:0;pointer-events:none">
+        <svg width="100%" height="100%" viewBox="0 0 240 300" style="position:absolute;inset:0">
+          <polyline points="0,20 0,0 20,0" stroke="#00ff88" stroke-width="2" fill="none" opacity=".7"/>
+          <polyline points="220,0 240,0 240,20" stroke="#00ff88" stroke-width="2" fill="none" opacity=".7"/>
+          <polyline points="0,280 0,300 20,300" stroke="#00ff88" stroke-width="2" fill="none" opacity=".7"/>
+          <polyline points="220,300 240,300 240,280" stroke="#00ff88" stroke-width="2" fill="none" opacity=".7"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- Analiz mesajı -->
+    <div id="analysis-message" style="font-size:15px;font-weight:600;color:var(--primary);
+      min-height:24px;margin-bottom:.5rem">Analiziniz başlıyor...</div>
+
+    <!-- Pulse dots -->
+    <div class="analysis-pulse">
+      <div class="pulse-dot"></div>
+      <div class="pulse-dot"></div>
+      <div class="pulse-dot"></div>
+    </div>
+
+    <div class="analysis-tip-box" id="analysis-tip">
+      💡 C vitamini sabah, retinol akşam — altın kural.
+    </div>
+  </div>
+</div>
+<!-- ══════════════════════════════════════════ -->
+<!-- ADIM 7 — SONUÇ RAPORU                     -->
+<!-- ══════════════════════════════════════════ -->
+<div class="step" id="step-7">
+
+  <!-- Özet kartı — her zaman görünür -->
+  <div style="margin-bottom:1rem">
+    <div id="summary-card"></div>
+  </div>
+
+  <!-- Problem Analizi — accordion -->
+  <div class="acc-section open" id="acc-problems">
+    <div class="acc-header" onclick="toggleAcc('acc-problems')">
+      <div class="acc-header-left">
+        <span class="acc-icon">🔍</span>
+        <span class="acc-title">Problem Analizi</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div id="problem-scores" style="padding-top:.75rem"></div>
+    </div>
+  </div>
+
+  <!-- Bakım Rutini — accordion -->
+  <div class="acc-section" id="acc-routine">
+    <div class="acc-header" onclick="toggleAcc('acc-routine')">
+      <div class="acc-header-left">
+        <span class="acc-icon">🌿</span>
+        <span class="acc-title">Kişisel Bakım Rutini</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div class="routine-tabs" style="margin-top:.75rem">
+        <button class="routine-tab active" onclick="switchTab('morning',this)">🌅 Sabah</button>
+        <button class="routine-tab" onclick="switchTab('evening',this)">🌙 Akşam</button>
+        <button class="routine-tab" onclick="switchTab('weekly',this)">📅 Haftalık</button>
+      </div>
+      <div class="routine-panel active" id="tab-morning"><div id="morning-routine"></div></div>
+      <div class="routine-panel" id="tab-evening"><div id="evening-routine"></div></div>
+      <div class="routine-panel" id="tab-weekly"><div id="weekly-routine"></div></div>
+    </div>
+  </div>
+
+  <!-- KAI Görsel Analizi — accordion (API sonucu) -->
+  <div class="acc-section" id="acc-ai-result">
+    <div class="acc-header" onclick="toggleAcc('acc-ai-result')">
+      <div class="acc-header-left">
+        <span class="acc-icon">🤖</span>
+        <span class="acc-title">KAI Görsel Analizi</span>
+        <span class="acc-badge" id="ai-badge" style="display:none">YENİ</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div id="ai-photo-result" style="padding-top:.75rem">
+        <p style="font-size:13px;color:var(--muted);font-style:italic">Fotoğraf analizi sonucu burada görünecek...</p>
+      </div>
+      <!-- 8'li tarama grid -->
+      <div id="scan-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem"></div>
+    </div>
+  </div>
+
+  <!-- İçerik Rehberi — accordion -->
+  <div class="acc-section" id="acc-ingredients">
+    <div class="acc-header" onclick="toggleAcc('acc-ingredients')">
+      <div class="acc-header-left">
+        <span class="acc-icon">🧪</span>
+        <span class="acc-title">İçerik Rehberi</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div id="ingredients-content" style="padding-top:.75rem"></div>
+    </div>
+  </div>
+
+  <!-- Doğal Alternatifler — accordion -->
+  <div class="acc-section" id="acc-natural">
+    <div class="acc-header" onclick="toggleAcc('acc-natural')">
+      <div class="acc-header-left">
+        <span class="acc-icon">🌱</span>
+        <span class="acc-title">Doğal Alternatifler</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div id="natural-alternatives" style="padding-top:.75rem"></div>
+    </div>
+  </div>
+
+  <!-- Ürün Önerileri — accordion -->
+  <div class="acc-section" id="acc-products">
+    <div class="acc-header" onclick="toggleAcc('acc-products')">
+      <div class="acc-header-left">
+        <span class="acc-icon">🛍️</span>
+        <span class="acc-title">Kişisel Ürün Önerileri</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <div id="product-recommendations" style="padding-top:.75rem">
+        <div id="prod-consent-gate" style="text-align:center;padding:1rem">
+          <button class="btn-outline" onclick="UI.showProductConsent()">Ürün Önerilerini Gör →</button>
+          <p style="font-size:12px;color:var(--muted);margin-top:.5rem">Devam etmeden önce kısa bir bilgilendirme gösterilecek</p>
+        </div>
+        <div id="prod-main" style="display:none">
+          <div id="prod-category-select">
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem">
+              <button class="prod-cat-btn" onclick="showProdCategory('serums')">💊 Serum</button>
+              <button class="prod-cat-btn" onclick="showProdCategory('moisturizers')">🌿 Nemlendirici</button>
+              <button class="prod-cat-btn" onclick="showProdCategory('sunscreens')">☀️ SPF</button>
+              <button class="prod-cat-btn" onclick="showProdCategory('cleansers')">🧴 Temizleyici</button>
+              <button class="prod-cat-btn" onclick="showProdCategory('micellarWaters')">💧 Misel Su</button>
+              <button class="prod-cat-btn" onclick="showProdCategory('tonics')">🌊 Tonik</button>
+              <button class="prod-cat-btn" onclick="showProdCategory('eyeCreams')">👁️ Göz Kremi</button>
+              <button class="prod-cat-btn" onclick="showProdCategory('masks')">🎭 Maske</button>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">
+              <button class="prod-filter-btn active" onclick="setProdFilter('all',this)">Tümü</button>
+              <button class="prod-filter-btn" onclick="setProdFilter('uygun',this)">💰 Uygun</button>
+              <button class="prod-filter-btn" onclick="setProdFilter('orta',this)">💳 Orta</button>
+              <button class="prod-filter-btn" onclick="setProdFilter('premium',this)">⭐ Premium</button>
+            </div>
+          </div>
+          <div id="prod-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Masaj & Uygulama Rehberi — accordion — kullanıcı fotoğrafı üzerinde oklar -->
+  <div class="acc-section" id="acc-massage">
+    <div class="acc-header" onclick="toggleAcc('acc-massage')">
+      <div class="acc-header-left">
+        <span class="acc-icon">💆</span>
+        <span class="acc-title">Masaj & Uygulama Rehberi</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <!-- Kullanıcı yüz fotoğrafı + oklar -->
+      <div id="massage-photo-area" style="text-align:center;margin:.75rem 0 1rem">
+        <div style="position:relative;display:inline-block;max-width:240px;width:100%">
+          <img id="massage-photo" style="width:100%;border-radius:12px;display:block" alt="">
+          <canvas id="massage-canvas" style="position:absolute;inset:0;width:100%;height:100%;border-radius:12px"></canvas>
+        </div>
+      </div>
+
+      <!-- Masaj türü butonları -->
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem">
+        <button class="routine-tab active" onclick="switchMassage('lenf',this)">🌊 Lenf</button>
+        <button class="routine-tab" onclick="switchMassage('lifting',this)">⬆️ Lifting</button>
+        <button class="routine-tab" onclick="switchMassage('gozalti',this)">👁 Göz Altı</button>
+        <button class="routine-tab" onclick="switchMassage('uygulama',this)">🧴 Ürün</button>
+      </div>
+
+      <!-- Masaj içeriği (JS tarafından doldurulur) -->
+      <div id="massage-content"></div>
+    </div>
+  </div>
+
+  <!-- Uzman Yönlendirme — accordion -->
+  <div class="acc-section" id="acc-expert">
+    <div class="acc-header" onclick="toggleAcc('acc-expert')">
+      <div class="acc-header-left">
+        <span class="acc-icon">⚕️</span>
+        <span class="acc-title">Uzman Danışmanlığı Gereken Durumlar</span>
+      </div>
+      <span class="acc-arrow">▼</span>
+    </div>
+    <div class="acc-body">
+      <ul style="padding-left:1.2rem;margin-top:.75rem">
+        <li style="font-size:13px;color:#7a4f0e;margin-bottom:.3rem">Yüksek şiddetli problem skoru çıkan alanlar</li>
+        <li style="font-size:13px;color:#7a4f0e;margin-bottom:.3rem">3 haftadan uzun süren cilt reaksiyonları</li>
+        <li style="font-size:13px;color:#7a4f0e;margin-bottom:.3rem">Yeni oluşan veya büyüyen leke / ben</li>
+        <li style="font-size:13px;color:#7a4f0e;margin-bottom:.3rem">Şiddetli kaşıntı, yanma veya ağrı</li>
+        <li style="font-size:13px;color:#7a4f0e">Uygulanan ürünlere alerjik reaksiyon</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="validity-note">📅 Bu analiz bugün oluşturulmuştur. 3 ayda bir yenilemeniz önerilir.</div>
+
+  <!-- Aksiyon Butonları -->
+  <div class="action-buttons" style="margin-top:1rem">
+    <button class="btn-primary" onclick="downloadPDF()">📥 PDF İndir</button>
+    <button class="btn-outline" onclick="resetApp()">🔄 Yeniden Başla</button>
+  </div>
+  <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <button class="btn-secondary" onclick="shareResult()">🔗 Paylaş</button>
+    <button class="btn-secondary" onclick="copyResult()">📋 Kopyala</button>
+  </div>
+
+</div><!-- step-7 sonu -->
+
+</div><!-- app-wrap sonu -->
+
+<!-- ══════════════════════════════════════════ -->
+<!-- MODALLAR                                  -->
+<!-- ══════════════════════════════════════════ -->
+
+<!-- Onay Modalı -->
+<div class="modal" id="consent-modal">
+  <div class="modal-box">
+    <h2>Kullanmadan Önce Lütfen Okuyun</h2>
+    <div class="modal-section">
+      <h3>⚕️ Tıbbi Uyarı</h3>
+      <p>Bu uygulama TC Sağlık Bakanlığı tarafından onaylanmış bir tıbbi uygulama DEĞİLDİR.
+        Sunulan analizler ve öneriler tıbbi teşhis, tedavi veya reçete yerine geçmez.
+        Doktor, eczacı veya dermatolog görüşünün alternatifi değildir.
+        Ciddi cilt sorunlarında mutlaka dermatoloji uzmanına başvurunuz.</p>
+    </div>
+    <div class="modal-section">
+      <h3>🔒 KVKK — 6698 Sayılı Kanun</h3>
+      <p>Girdiğiniz veriler yalnızca cihazınızda (localStorage) saklanmaktadır.
+        Sunucuya gönderilmez ve üçüncü taraflarla paylaşılmaz. Verilerinizi
+        istediğiniz zaman silebilirsiniz.</p>
+    </div>
+    <div class="modal-section">
+      <h3>🧴 İçerik & Ürün Önerileri</h3>
+      <p>Uygulama içindeki içerik ve ürün önerileri genel bilgi amaçlıdır.
+        Herhangi bir ürün kullanmadan önce içerik listesini kontrol edin.
+        Bilinen alerjileriniz varsa uzman görüşü alın.</p>
+    </div>
+    <label class="consent-check">
+      <input type="checkbox" id="consent-1" onchange="checkConsent()">
+      Tıbbi uyarıyı okudum ve anladım
+    </label>
+    <label class="consent-check">
+      <input type="checkbox" id="consent-2" onchange="checkConsent()">
+      KVKK aydınlatma metnini okudum, kişisel verilerimin işlenmesini onaylıyorum
+    </label>
+    <label class="consent-check">
+      <input type="checkbox" id="consent-3" onchange="checkConsent()">
+      18 yaşından büyük olduğumu beyan ederim
+    </label>
+    <button class="btn-primary" id="consent-btn" onclick="acceptConsent()" disabled style="margin-top:1.25rem">
+      Anladım, Başlayalım →
+    </button>
+  </div>
+</div>
+
+<!-- Ürün Onay Modalı -->
+<div class="modal" id="product-consent-modal">
+  <div class="modal-box">
+    <h2>🛍️ Ürün Önerileri Hakkında</h2>
+    <p>Bu bölümde cilt analizinize göre önerilen ürünler ve içerik analizleri gösterilecektir.</p>
+    <div class="modal-section">
+      <h3>⚠️ Önemli Hatırlatma</h3>
+      <p>• Tüm öneriler genel bilgi amaçlıdır<br>
+        • Satın almadan önce içerik listesini kontrol edin<br>
+        • Alerjiniz varsa kullanmadan önce uzman görüşü alın<br>
+        • Yeni ürünü önce küçük bir alanda test edin<br>
+        • Fiyatlar değişkenlik gösterebilir</p>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:1.25rem">
+      <button class="btn-secondary" onclick="document.getElementById('product-consent-modal').classList.remove('open')">Vazgeç</button>
+      <button class="btn-primary" onclick="acceptProductConsent()">Anladım, Göster →</button>
+    </div>
+  </div>
+</div>
+
+<!-- INCI Detay Modalı -->
+<div class="modal" id="inci-modal">
+  <div class="modal-box">
+    <div id="inci-modal-content"></div>
+  </div>
+</div>
+
+<!-- Cilt Tipi Yardımcı Modal -->
+<div class="modal" id="skintype-helper-modal">
+  <div class="modal-box" style="max-width:440px">
+    <h2 style="margin-bottom:1.25rem">🔍 Cilt Tipini Bulalım</h2>
+
+    <!-- S1 -->
+    <div id="sq1">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:6px">Soru 1 / 3</p>
+      <p style="font-size:15px;font-weight:500;margin-bottom:1rem;line-height:1.5">Yüzünüzü yıkadıktan 1-2 saat sonra nasıl hissettiriyor?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="hq-opt" onclick="sq(1,'parlak')">✨ Yağlı ve parlak hissettiriyor</button>
+        <button class="hq-opt" onclick="sq(1,'gerer')">🌵 Gergin ve çekiyor</button>
+        <button class="hq-opt" onclick="sq(1,'karma')">☯️ T-zone yağlı, yanaklar kuru</button>
+        <button class="hq-opt" onclick="sq(1,'normal')">💧 Dengeli, normal hissettiriyor</button>
+      </div>
+    </div>
+
+    <!-- S2 -->
+    <div id="sq2" style="display:none">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:6px">Soru 2 / 3</p>
+      <p style="font-size:15px;font-weight:500;margin-bottom:1rem;line-height:1.5">Gözenekleriniz nasıl görünüyor?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="hq-opt" onclick="sq(2,'buyuk')">⭕ Büyük ve belirgin</button>
+        <button class="hq-opt" onclick="sq(2,'tzone')">〰️ Sadece T-zone'da belirgin</button>
+        <button class="hq-opt" onclick="sq(2,'kucuk')">🔘 Küçük, neredeyse görünmüyor</button>
+        <button class="hq-opt" onclick="sq(2,'kizarik')">🌸 Kızarıklık veya hassasiyet var</button>
+      </div>
+    </div>
+
+    <!-- S3 -->
+    <div id="sq3" style="display:none">
+      <p style="font-size:12px;color:var(--muted);margin-bottom:6px">Soru 3 / 3</p>
+      <p style="font-size:15px;font-weight:500;margin-bottom:1rem;line-height:1.5">Günün sonunda yüzünüz nasıl görünüyor?</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="hq-opt" onclick="sq(3,'cok_parlak')">✨ Çok parlıyor, yağlanıyor</button>
+        <button class="hq-opt" onclick="sq(3,'hala_gerer')">🌵 Hâlâ gergin ve kuru</button>
+        <button class="hq-opt" onclick="sq(3,'hassas_his')">🌸 Kızarıklık veya yanma oluyor</button>
+        <button class="hq-opt" onclick="sq(3,'normal_his')">💧 Normal, belirgin bir şey yok</button>
+      </div>
+    </div>
+
+    <!-- SONUÇ -->
+    <div id="sq-result" style="display:none;text-align:center;padding:1rem 0">
+      <div id="sq-icon" style="font-size:52px;margin-bottom:.75rem"></div>
+      <div id="sq-label" style="font-size:20px;font-weight:500;color:var(--primary);margin-bottom:.5rem"></div>
+      <div id="sq-desc" style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1.5rem"></div>
+      <button class="btn-primary" id="sq-select-btn" style="max-width:260px;margin:0 auto;display:block"></button>
+      <div style="margin-top:.75rem">
+        <a href="#" onclick="sqReset();event.preventDefault()" style="font-size:13px;color:var(--muted)">↺ Yeniden başlat</a>
+      </div>
+    </div>
+
+    <button class="btn-secondary" style="width:100%;margin-top:1rem"
+      onclick="document.getElementById('skintype-helper-modal').classList.remove('open');sqReset()">
+      Kapat
+    </button>
+  </div>
+</div>
+
+<!-- Pro Modal -->
+<div class="modal" id="pro-modal">
+  <div class="modal-box" style="text-align:center">
+    <div style="font-size:48px;margin-bottom:1rem">⭐</div>
+    <h2>Pro Üyelik</h2>
+    <p>Ürün önerileri, hammadde analizleri, PDF rapor ve daha fazlası için Pro üyeliğe geçin.</p>
+    <div style="background:var(--bg);border-radius:var(--r);padding:1rem;margin:1rem 0">
+      <div style="font-size:28px;font-weight:500;color:var(--primary)">₺149<span style="font-size:14px;font-weight:400;color:var(--muted)">/ay</span></div>
+      <div style="font-size:13px;color:var(--muted)">veya ₺999/yıl (₺83/ay)</div>
+    </div>
+    <ul style="text-align:left;padding-left:1.25rem;margin:.75rem 0">
+      <li style="font-size:13px;margin-bottom:.4rem">✓ Kişisel ürün önerileri (Trendyol/Hepsiburada)</li>
+      <li style="font-size:13px;margin-bottom:.4rem">✓ Hammadde bileşen analizi</li>
+      <li style="font-size:13px;margin-bottom:.4rem">✓ PDF rapor indirme</li>
+      <li style="font-size:13px;margin-bottom:.4rem">✓ 30 günlük program</li>
+      <li style="font-size:13px">✓ Sınırsız analiz</li>
+    </ul>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:1rem">Ödeme sistemi yakında aktif olacak — beta sürecinde ücretsiz</p>
+    <button class="btn-secondary" onclick="document.getElementById('pro-modal').classList.remove('open')">Kapat</button>
+  </div>
+</div>
+
+<!-- Alt Banner -->
+<div class="bottom-banner">
+  ℹ️ Bu uygulama tıbbi öneri sunmaz • Sorunun devam ederse dermatologa başvurun
+</div>
+
+<!-- ══════════════════════════════════════════ -->
+<!-- SCRIPTS                                   -->
+<!-- ══════════════════════════════════════════ -->
+
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- SCRIPTS — yükleme sırası önemli                            -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<script src="js/config.js"></script>
+<script src="js/ingredients-db.js"></script>
+<script src="js/products-db.js"></script>
+<script src="js/app-state.js"></script>
+<script src="js/skin-engine.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/form-helpers.js"></script>
+<script src="js/photos.js"></script>
+<script src="js/camera.js"></script>
+<script src="js/accordion.js"></script>
+<script src="js/scan-anim.js"></script>
+<script src="js/massage.js"></script>
+<script src="js/scan-grid.js"></script>
+<script src="js/products.js"></script>
+
+</body>
+</html>
+
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Permissions-Policy = "camera=*, microphone=()"
+    X-Frame-Options = "SAMEORIGIN"
